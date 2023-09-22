@@ -1,0 +1,30 @@
+{
+  "name": "pixelwand-backend-assignment",
+  "version": "1.0.0",
+  "description": "This is a backend assignment project assigned by pixelwand",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Muhammad Yunus",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.0.1",
+    "glob": "^10.3.5",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "node-cache": "^5.1.2",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "xss-clean": "^0.1.4",
+    "yup": "^1.2.0"
+  }
+}
