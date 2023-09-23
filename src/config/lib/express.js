@@ -8,7 +8,25 @@ const nodeCache = require(path.join(process.cwd(), 'src/config/lib/nodecache'));
 
 module.exports = () => {
   const app = express();
+
+  // Set security http headers
+  app.use(helmet());
+  // Development logging
   app.use(morgan('dev'));
+  // Limit requests from same API
+  const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many requests from this IP. Please try again in an hour!',
+  });
+  app.use('/api', limiter);
+
+  // Data sanitization against NoSQL Query injection
+  app.use(mongoSanitize());
+
+  // Data sanitization against XSS (Cross Site Scripting) attack
+  app.use(xssClean());
+
   app.use(cookieParser(nodeCache.getValue('COOKIE_SECRET')));
   app.use(express.json());
   app.set('port', nodeCache.getValue('PORT'));
