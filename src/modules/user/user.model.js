@@ -2,6 +2,64 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - name
+ *        - email
+ *        - password
+ *      properties:
+ *        name:
+ *          type: String
+ *          default: Muhammad Yunus
+ *        email:
+ *          type: String
+ *          default: yunus@example.com
+ *        password:
+ *          type: String
+ *          default: My@1245!
+ *    CreateUserResponse:
+ *      type: object
+ *      properties:
+ *        _id:
+ *          type: String
+ *        name:
+ *          type: String
+ *        email:
+ *          type: String
+ *        accessToken:
+ *          type: String
+ *    CreateUserLoginInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *        email:
+ *          type: String
+ *          default: yunus@example.com
+ *        password:
+ *          type: String
+ *          default: My@1245!
+ *    CreateUserLoginResponse:
+ *      type: object
+ *      properties:
+ *        _id:
+ *          type: String
+ *        name:
+ *          type: String
+ *        email:
+ *          type: String
+ *        accessToken:
+ *          type: String
+ *        refreshToken:
+ *          type: String
+ */
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

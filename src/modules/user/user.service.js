@@ -19,12 +19,7 @@ const generateRefreshToken = user => {
   return refreshToken;
 };
 
-const generateLoggedInUser = ({ name, email, _id: userId }) => {
-  return { name, email, userId };
-};
-
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
-  generateLoggedInUser,
 };

@@ -1,5 +1,5 @@
 const path = require('path');
-const { generateAccessToken, generateRefreshToken, generateLoggedInUser } = require(path.join(
+const { generateAccessToken, generateRefreshToken } = require(path.join(
   process.cwd(),
   '/src/modules/user/user.service.js'
 ));
@@ -7,26 +7,28 @@ const { asyncHandler, AppError } = require(path.join(process.cwd(), 'src/modules
 const User = require('./user.model');
 const Session = require(path.join(process.cwd(), 'src/modules/session/session.model'));
 
-const register = asyncHandler(async (req, res, next) => {
+const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     return next(new AppError(400, 'User already exists!'));
   }
-  try {
-    const registeredUser = await User.create({ name, email, password });
-    const accessToken = generateAccessToken(registeredUser);
-    await Session.create({
-      token: [accessToken],
-      userId: registeredUser._id,
-    });
-  } catch (err) {
-    return next(new AppError(500, 'Internal server error. Please try again!'));
-  }
+  const registeredUser = await User.create({ name, email, password });
+  const accessToken = generateAccessToken(registeredUser);
+  await Session.create({
+    token: [accessToken],
+    userId: registeredUser._id,
+  });
 
   res.status(201).json({
     status: 'success',
-    message: 'User created successfully!',
+    message: 'User created successfully',
+    user: {
+      _id: registeredUser?._id,
+      name: registeredUser?.name,
+      email: registeredUser?.email,
+      accessToken,
+    },
   });
 });
 
@@ -60,7 +62,13 @@ const login = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     message: 'User logged in successfully!',
-    user: generateLoggedInUser(user),
+    user: {
+      _id: user?._id,
+      name: user?.name,
+      email: user?.email,
+      accessToken,
+      refreshToken,
+    },
   });
 });
 
@@ -78,7 +86,7 @@ const logout = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-  register,
+  registerUser,
   login,
   logout,
 };

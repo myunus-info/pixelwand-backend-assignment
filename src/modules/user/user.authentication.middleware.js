@@ -1,12 +1,13 @@
 const passport = require('passport');
+const { AppError } = require('../core/errors/');
 
 const AuthStrategy = (req, res, next) => {
   const auth = passport.authenticate('user-jwt', (error, user) => {
     if (error) {
-      return res.status(500).json({ msg: 'Internal server error' });
+      return next(new AppError(500, 'Internal server error'));
     }
     if (!user) {
-      return res.status(401).json({ msg: 'Authentication failed' });
+      return next(new AppError(401, 'You must login to get access!'));
     }
     req.login(user, { session: false }, err => {
       if (err) {
